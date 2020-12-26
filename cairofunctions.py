@@ -12,9 +12,9 @@ coords = lambda ORIGIN,i,j,x,y: (add(ORIGIN,scale(i,x))[0], add(ORIGIN,scale(j,y
 def plot_func(cr, f, ORIGIN ,i,j, xlow, xmax):
     for n in range((xmax-xlow)*100):
         m1 = xlow + n*0.01
-        y1 = eval(f, {"x":m1})
+        y1 = f(m1)
         m2 = m1 + 0.01
-        y2 = eval(f, {"x":m2})
+        y2 = f(m2)
         cr.move_to(*coords(ORIGIN,i,j,m1,y1))
         cr.line_to(*coords(ORIGIN,i,j,m2,y2))
         cr.stroke()
