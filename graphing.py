@@ -4,7 +4,7 @@ import math
 
 w = 1080
 h = 720
-ORIGIN = cairofunctions.Point(w/2, h/2)
+ORIGIN = cairofunctions.Point(w/2 - 10, h/2)
 i = cairofunctions.Point(w/22, 30)
 j = cairofunctions.Point(0, w/22)
 

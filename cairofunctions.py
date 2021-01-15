@@ -122,34 +122,34 @@ class CoordinateGrid():
         self.i = i
         self.j = j
 
-        self.ymax = 1
+        self.ymax = 0
         while (not self.cf.isOutOfView(self.ORIGIN + self.j*self.ymax)):
             self.ymax += 1
          
-        self.ylow = 1
-        while (not self.cf.isOutOfView(self.ORIGIN - self.j*self.ylow)):
-            self.ylow += 1
+        self.ylow = 0
+        while (not self.cf.isOutOfView(self.ORIGIN + self.j*self.ylow)):
+            self.ylow -= 1
 
-        self.xmax = 1
+        self.xmax = 0
         while (not self.cf.isOutOfView(self.ORIGIN + self.i*self.xmax)):
             self.xmax += 1
          
-        self.xlow = 1
-        while (not self.cf.isOutOfView(self.ORIGIN - self.i*self.xlow)):
-            self.xlow += 1
+        self.xlow = 0
+        while (not self.cf.isOutOfView(self.ORIGIN + self.i*self.xlow)):
+            self.xlow -= 1
 
 
     def DrawAxes(self):
         # Generate Y axis
         p = self.ORIGIN + self.j*self.ymax
         self.cr.move_to(p.x, p.y)
-        p = self.ORIGIN - self.j*self.ylow
+        p = self.ORIGIN + self.j*self.ylow
         self.cr.line_to(p.x, p.y)
         
         # Generate X axis
         p = self.ORIGIN + self.i*self.xmax
         self.cr.move_to(p.x, p.y)
-        p = self.ORIGIN - self.i*self.xlow
+        p = self.ORIGIN + self.i*self.xlow
         self.cr.line_to(p.x, p.y)
 
         self.cr.stroke()
@@ -159,14 +159,14 @@ class CoordinateGrid():
             raise ValueError("r must be between 0 and 1")
 
         # Generate Y axis Grid Marks
-        for a in range(-self.ylow, self.ymax):
+        for a in range(self.ylow, self.ymax):
             p = self.ORIGIN + self.j*a + self.i*r
             self.cr.move_to(p.x, p.y)
             p = self.ORIGIN + self.j*a - self.i*r
             self.cr.line_to(p.x, p.y)
 
         # Generate X axis Grid Marks
-        for a in range(-self.xlow, self.xmax):
+        for a in range(self.xlow, self.xmax):
             p = self.ORIGIN + self.i*a + self.j*r
             self.cr.move_to(p.x, p.y)
             p = self.ORIGIN + self.i*a - self.j*r
@@ -177,12 +177,12 @@ class CoordinateGrid():
 
     def DrawGridLines(self):
         # Generate Lines || Y axis
-        for a in range(-self.xlow, self.xmax):
+        for a in range(self.xlow, self.xmax):
             n = 1
-            p = self.ORIGIN + self.i*a - self.j*(self.ylow + n)
+            p = self.ORIGIN + self.i*a + self.j*(self.ylow - n)
             while (not self.cf.isOutOfView(p)):
                 n += 1
-                p = self.ORIGIN + self.i*a - self.j*(self.ylow + n)
+                p = self.ORIGIN + self.i*a + self.j*(self.ylow - n)
 
             self.cr.move_to(p.x, p.y)
 
@@ -197,22 +197,66 @@ class CoordinateGrid():
         self.cr.stroke()
 
         # Generate Lines || X axis
-        for a in range(-self.ylow, self.ymax):
-            n = 1
-            p = self.ORIGIN + self.j*a - self.i*(self.xlow + n)
-            while (not self.cf.isOutOfView(p)):
+        # Down direction
+        a = 0
+        while True:
+            n = 0
+            a += 1
+            while True:
                 n += 1
-                p = self.ORIGIN + self.j*a - self.i*(self.xlow + n)
+                p1 = self.ORIGIN + self.j*a + self.i*(self.xlow - n)
 
-            self.cr.move_to(p.x, p.y)
+                if (self.cf.isOutOfView(p1)):
+                    break
 
-            n = 1
-            p = self.ORIGIN + self.j*a + self.i*(self.xmax + n)
-            while (not self.cf.isOutOfView(p)):
+            self.cr.move_to(p1.x, p1.y)
+
+            n = 0
+            while True:
                 n += 1
-                p = self.ORIGIN + self.j*a + self.i*(self.xmax + n)
+                p2 = self.ORIGIN + self.j*a + self.i*(self.xmax + n)
 
-            self.cr.line_to(p.x, p.y)
+                if (self.cf.isOutOfView(p2)):
+                    break
+
+            self.cr.line_to(p2.x, p2.y)
+            if (self.cf.isOutOfViewY(Point(0, (0 - p1.x)*(p1.y - p2.y)/(p1.x - p2.x) + p1.y)) 
+                and
+                self.cf.isOutOfViewY(Point(self.width, (self.width - p1.x)*(p1.y - p2.y)/(p1.x - p2.x) + p1.y))
+                ):
+                break
+
+
+        # Up direction
+        a = 0
+        while True:
+            n = 0
+            a -= 1
+            while True:
+                n += 1
+                p1 = self.ORIGIN + self.j*a + self.i*(self.xlow - n)
+
+                if (self.cf.isOutOfView(p1)):
+                    break
+
+            self.cr.move_to(p1.x, p1.y)
+
+            n = 0
+            while True:
+                n += 1
+                p2 = self.ORIGIN + self.j*a + self.i*(self.xmax + n)
+
+                if (self.cf.isOutOfView(p2)):
+                    break
+
+            self.cr.line_to(p2.x, p2.y)
+
+            if (self.cf.isOutOfViewY(Point(0, (0 - p1.x)*(p1.y - p2.y)/(p1.x - p2.x) + p1.y)) 
+                and
+                self.cf.isOutOfViewY(Point(self.width, (self.width - p1.x)*(p1.y - p2.y)/(p1.x - p2.x) + p1.y))
+                ):
+                break
+
 
         self.cr.stroke()
 
