@@ -3,8 +3,10 @@
 ### Todo
 
 - [ ] Add Grid Lines
-- [ ] Change parameters for i and j unit vectors
 - [ ] Make Colorscheme Customizable
-- [ ] Generate Coordinate Grid with a Function
-- [ ] Add option to remove grid marks that intersect with arrowhead.
 - [ ] Add numbers to axes
+- [ ] Add Text Rendering
+- [ ] Add Points
+- [ ] Add Plotting
+- [ ] Documentation
+- [ ] Add Geometric Objects

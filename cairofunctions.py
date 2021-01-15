@@ -32,6 +32,18 @@ class Point():
     def mod(self):
         return math.sqrt(self.x**2 + self.y**2)
 
+class Transform():
+    def __init__(self, i, j):
+        self.i = i
+        self.j = j
+
+    def __mul__(self, point):
+        if (isinstance(point, Point)):
+            return Point(point.x * self.i.x + point.y * self.j.x,
+                    point.x*self.i.y + point.y*self.j.y)
+
+rot90 = Transform(Point(0, 1), Point(-1, 0))
+
 class Context():
     def __init__(self, cr, w, h):
         self.cr = cr
@@ -130,23 +142,25 @@ class CoordinateGrid():
 
         self.cr.stroke()
 
-    def DrawGridMarks(self, d):
-        for k in range(math.floor(self.width/(2*self.unit))):
-            l = add(self.ORIGIN, scale(self.i,k))
-            self.cr.move_to(*add(l, (0, d)))
-            self.cr.line_to(*add(l, (0, -d)))
-            l = add(self.ORIGIN, scale(self.i,-k))
-            self.cr.move_to(*add(l, (0, d)))
-            self.cr.line_to(*add(l, (0, -d)))
+    def DrawGridMarks(self, r):
+        if (r < 0 or r > 1):
+            raise ValueError("r must be between 0 and 1")
 
-        for k in range(math.ceil(self.height/(2*self.unit))):
-            l = add(self.ORIGIN, scale(self.j,k))
-            self.cr.move_to(*add(l, (d, 0)))
-            self.cr.line_to(*add(l, (-d, 0)))
-            l = add(self.ORIGIN, scale(self.j,-k))
-            self.cr.move_to(*add(l, (d, 0)))
-            self.cr.line_to(*add(l, (-d, 0)))
-        
+        # Generate Y axis Grid Marks
+        for a in range(-self.ylow, self.ymax):
+            p = self.ORIGIN + self.j*a + self.i*r
+            self.cr.move_to(p.x, p.y)
+            p = self.ORIGIN + self.j*a - self.i*r
+            self.cr.line_to(p.x, p.y)
+
+        # Generate X axis Grid Marks
+        for a in range(-self.xlow, self.xmax):
+            p = self.ORIGIN + self.i*a + self.j*r
+            self.cr.move_to(p.x, p.y)
+            p = self.ORIGIN + self.i*a - self.j*r
+            self.cr.line_to(p.x, p.y)
+
+
         self.cr.stroke()
 
 
