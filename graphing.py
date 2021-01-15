@@ -1,5 +1,6 @@
 import cairo
 import cairofunctions
+import math
 
 ims = cairo.ImageSurface(cairo.FORMAT_ARGB32, 1080, 720)
 cr = cairo.Context(ims)
@@ -12,6 +13,6 @@ cr.paint()
 cr.set_source_rgb(255,255,255)
 cg.DrawAxes()
 cg.DrawGridMarks(8)
-cg.PlotFunc(lambda x: x**5, -10, 20)
+cg.PlotFunc(lambda x: 3*math.sin(math.pi*x/10), -20, 20)
 
 ims.write_to_png("img.png")

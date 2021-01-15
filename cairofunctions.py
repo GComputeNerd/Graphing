@@ -12,6 +12,23 @@ coords = lambda ORIGIN,i,j,x,y: (add(ORIGIN,scale(i,x))[0], add(ORIGIN,scale(j,y
 class Error(Exception):
     pass
 
+class Point():
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def __add__(self, point):
+        return Point(self.x + point.x, self.y + point.y)
+
+    def __mul__(self, scalar):
+        return Point(self.x * scalar, self.y * scalar)
+
+    def __sub__(self, point):
+        return Point(self.x - point.x, self.y - point.y)
+
+    def mod(self):
+        return math.sqrt(self.x**2 + self.y**2)
+
 class Context():
     def __init__(self, cr, w, h):
         self.cr = cr
@@ -34,7 +51,6 @@ class Context():
         # Draw 2 lines from (x,y) to points rotating (x1,y1) by `arrow_angle` and `-arrow_angle` about the point (x,y)
         self.cr.move_to(x,y)
         self.cr.line_to(((x1-x)*math.cos(arrow_angle) - (y1+y)*math.sin(arrow_angle) +x),-((x1-x)*math.sin(arrow_angle) + (y1+y)*math.cos(arrow_angle) -y))
-    
         self.cr.move_to(x,y)
         arrow_angle = -arrow_angle
     
@@ -87,7 +103,6 @@ class CoordinateGrid():
             l = add(self.ORIGIN, scale(self.i,-k))
             self.cr.move_to(*add(l, (0, d)))
             self.cr.line_to(*add(l, (0, -d)))
-            self.cr.stroke()
 
         for k in range(math.ceil(self.height/(2*self.unit))):
             l = add(self.ORIGIN, scale(self.j,k))
@@ -96,7 +111,9 @@ class CoordinateGrid():
             l = add(self.ORIGIN, scale(self.j,-k))
             self.cr.move_to(*add(l, (d, 0)))
             self.cr.line_to(*add(l, (-d, 0)))
-            self.cr.stroke()
+        
+        self.cr.stroke()
+
 
     def PlotFunc(self, f, xlow, xmax):
         step = self.unit/100
@@ -108,7 +125,8 @@ class CoordinateGrid():
             y2 = f(self.unit*m2)
             self.cr.move_to(*scale(self.coords(m1,y1), 1/self.unit))
             self.cr.line_to(*scale(self.coords(m2,y2), 1/self.unit))
-            self.cr.stroke()
+        
+        self.cr.stroke()
 
 def plot_func(cr, f, ORIGIN ,i,j, xlow, xmax):
     for n in range((xmax-xlow)*100):
