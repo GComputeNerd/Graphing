@@ -21,7 +21,10 @@ class Point():
         return Point(self.x + point.x, self.y + point.y)
 
     def __mul__(self, scalar):
-        return Point(self.x * scalar, self.y * scalar)
+        if (isinstance(scalar, float)):
+            return Point(self.x * scalar, self.y * scalar)
+        elif (isinstance(scalar, int)):
+            return Point(self.x * scalar, self.y * scalar)
 
     def __sub__(self, point):
         return Point(self.x - point.x, self.y - point.y)
@@ -32,8 +35,8 @@ class Point():
 class Context():
     def __init__(self, cr, w, h):
         self.cr = cr
-        self.width = w
-        self.height = h
+        self.w = w
+        self.h = h
 
     def arrow_to(self, x, y, arrow_height=20, arrow_angle=math.pi/8):
         #Draws an arrow from curret point to (x,y)
@@ -73,27 +76,58 @@ class Context():
         cr.arc(x,y, r, 0, 2*math.pi)
         cr.fill()
 
+    def isOutOfView(self, point):
+        if (point.x < 0 or point.x > self.w):
+            return True
+        elif (point.y <0 or point.y > self.h):
+            return True
+
+        return False
+
 
 class CoordinateGrid():
 
-    coords = lambda self,x,y: (add(self.ORIGIN,scale(self.i,x))[0], add(self.ORIGIN,scale(self.j,y))[1])
-
-    def __init__(self, cr, w, h, ORIGIN, unit, vu):
+    def __init__(self, cr, w, h, ORIGIN, i, j, xunit=1, yunit=1):
         self.cr = cr
         self.cf = Context(cr, w, h)
         self.width = w
         self.height = h
         self.ORIGIN = ORIGIN
-        self.unit = unit
-        self.vu = vu
-        self.i = (vu, 0)
-        self.j = (0, -vu)
+        self.xunit = xunit
+        self.yunit = yunit
+        self.i = i
+        self.j = j
 
     def DrawAxes(self):
-        self.cr.move_to(0,self.ORIGIN[1])
-        self.cf.double_arrow_to(self.width, self.ORIGIN[1])
-        self.cr.move_to(self.ORIGIN[0], 0)
-        self.cf.double_arrow_to(self.ORIGIN[0], self.height)
+        # Generate Y axis
+        a = 1
+        while (not self.cf.isOutOfView(self.ORIGIN + self.j*a)):
+            a += 1
+        p = self.ORIGIN + self.j*a
+        self.cr.move_to(p.x, p.y)
+
+        a = 1
+        while (not self.cf.isOutOfView(self.ORIGIN - self.j*a)):
+            a += 1
+        p = self.ORIGIN - self.j*a
+        self.cr.line_to(p.x, p.y)
+
+        self.cr.stroke()
+        
+        # Generate X axis
+        a = 1
+        while (not self.cf.isOutOfView(self.ORIGIN + self.i*a)):
+            a += 1
+        p = self.ORIGIN + self.i*a
+        self.cr.move_to(p.x, p.y)
+
+        a = 1
+        while (not self.cf.isOutOfView(self.ORIGIN - self.i*a)):
+            a += 1
+        p = self.ORIGIN - self.i*a
+        self.cr.line_to(p.x, p.y)
+
+        self.cr.stroke()
 
     def DrawGridMarks(self, d):
         for k in range(math.floor(self.width/(2*self.unit))):
@@ -137,13 +171,6 @@ def plot_func(cr, f, ORIGIN ,i,j, xlow, xmax):
         cr.move_to(*coords(ORIGIN,i,j,m1,y1))
         cr.line_to(*coords(ORIGIN,i,j,m2,y2))
         cr.stroke()
-
-
-def Point(cr,x,y,r=5):
-    # Draws a point at (x,y)
-
-    cr.arc(x,y, r, 0, 2*math.pi)
-    cr.fill()
 
 def Polygon(cr, *points):
     # Draws polygon passing through points
