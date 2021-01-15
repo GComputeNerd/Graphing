@@ -98,33 +98,34 @@ class CoordinateGrid():
         self.i = i
         self.j = j
 
+        self.ymax = 1
+        while (not self.cf.isOutOfView(self.ORIGIN + self.j*self.ymax)):
+            self.ymax += 1
+         
+        self.ylow = 1
+        while (not self.cf.isOutOfView(self.ORIGIN - self.j*self.ylow)):
+            self.ylow += 1
+
+        self.xmax = 1
+        while (not self.cf.isOutOfView(self.ORIGIN + self.i*self.xmax)):
+            self.xmax += 1
+         
+        self.xlow = 1
+        while (not self.cf.isOutOfView(self.ORIGIN - self.i*self.xlow)):
+            self.xlow += 1
+
+
     def DrawAxes(self):
         # Generate Y axis
-        a = 1
-        while (not self.cf.isOutOfView(self.ORIGIN + self.j*a)):
-            a += 1
-        p = self.ORIGIN + self.j*a
+        p = self.ORIGIN + self.j*self.ymax
         self.cr.move_to(p.x, p.y)
-
-        a = 1
-        while (not self.cf.isOutOfView(self.ORIGIN - self.j*a)):
-            a += 1
-        p = self.ORIGIN - self.j*a
+        p = self.ORIGIN - self.j*self.ylow
         self.cr.line_to(p.x, p.y)
-
-        self.cr.stroke()
         
         # Generate X axis
-        a = 1
-        while (not self.cf.isOutOfView(self.ORIGIN + self.i*a)):
-            a += 1
-        p = self.ORIGIN + self.i*a
+        p = self.ORIGIN + self.i*self.xmax
         self.cr.move_to(p.x, p.y)
-
-        a = 1
-        while (not self.cf.isOutOfView(self.ORIGIN - self.i*a)):
-            a += 1
-        p = self.ORIGIN - self.i*a
+        p = self.ORIGIN - self.i*self.xlow
         self.cr.line_to(p.x, p.y)
 
         self.cr.stroke()

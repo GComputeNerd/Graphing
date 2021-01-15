@@ -27,7 +27,6 @@ cr.set_source_rgb(0,0,0)
 cr.paint()
 cr.set_source_rgb(255,255,255)
 cg.DrawAxes()
-cr.move_to(ORIGIN.x, ORIGIN.y)
-cr.line_to(i.x, i.y)
+print(cg.xlow, cg.xmax)
 
 ims.write_to_png("img.png")
