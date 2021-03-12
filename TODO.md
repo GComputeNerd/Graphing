@@ -2,7 +2,8 @@
 
 ### Todo
 
-- [ ] Add Grid Lines
+- [ ] Add X Axis Grid Lines
+- [ ] Optimize Line Drawing Algorithm
 - [ ] Make Colorscheme Customizable
 - [ ] Add numbers to axes
 - [ ] Add Text Rendering

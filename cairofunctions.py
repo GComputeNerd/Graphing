@@ -205,19 +205,56 @@ class CoordinateGrid():
 
         self.cr.stroke()
 
-    def DrawGridLines(self):
-        # Y Axis GridLines
+    def DrawGridLinesY(self):
+        # Y Axis GridLines Direction One
         a = 0
         m = self.i.y / self.i.x
-        f = lambda x, xi, yi: (x-xi)*m + yi
         while True:
-            print("LOOP")
+            # Plotting the lines
             a += 1
             n = 0
             p = self.ORIGIN + self.j*a
             
-            p1 = p + self.i*self.xlow
-            p2 = p + self.i*self.ymax
+            n = self.xmax
+            while True:
+                n += 1
+                p1 = p + self.i*n
+                if (self.cf.isOutOfView(p1)):
+                    break
+
+            n = self.xlow
+            while True:
+                n -= 1
+                p2 = p + self.i*n
+                if (self.cf.isOutOfView(p2)):
+                    break
+
+            self.cr.move_to(p1.x, p1.y)
+            self.cr.line_to(p2.x, p2.y)
+
+            if (not self.cf.intersectBoundary(m, p)):
+                break
+
+        a = 0
+        while True:
+            # Plotting the lines
+            a -= 1
+            n = 0
+            p = self.ORIGIN + self.j*a
+            
+            n = self.xmax
+            while True:
+                n += 1
+                p1 = p + self.i*n
+                if (self.cf.isOutOfView(p1)):
+                    break
+
+            n = self.xlow
+            while True:
+                n -= 1
+                p2 = p + self.i*n
+                if (self.cf.isOutOfView(p2)):
+                    break
 
             self.cr.move_to(p1.x, p1.y)
             self.cr.line_to(p2.x, p2.y)
