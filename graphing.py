@@ -5,8 +5,8 @@ import math
 w = 1080
 h = 720
 ORIGIN = cairofunctions.Point(w/2 - 10, h/2)
-i = cairofunctions.Point(w/22, 30)
-j = cairofunctions.Point(0, w/22)
+i = cairofunctions.Point(w/22, 10)
+j = cairofunctions.Point(10, w/22)
 
 ims = cairo.ImageSurface(cairo.FORMAT_ARGB32, w, h)
 cr = cairo.Context(ims)

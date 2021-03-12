@@ -29,8 +29,15 @@ class Point():
     def __sub__(self, point):
         return Point(self.x - point.x, self.y - point.y)
 
+    def __truediv__(self, scalar):
+        if (isinstance(scalar, float) or isinstance(scalar,int)):
+            return Point(self.x / scalar, self.y / scalar)
+
     def mod(self):
         return math.sqrt(self.x**2 + self.y**2)
+
+    def norm(self):
+        return self / self.mod()
 
 class Transform():
     def __init__(self, i, j):
@@ -108,6 +115,29 @@ class Context():
 
         return False
 
+    def intersectBoundary(self, m, point):
+        # Check left and right boundary
+        x1 = point.x
+        y1 = point.y
+
+        f = lambda x: m*(x-x1) + y1
+
+        if (not self.isOutOfView(Point(0, f(0)))
+                or
+                not self.isOutOfView(Point(self.w, f(self.w)))):
+            return True
+        
+        if (m != 0):
+            f = lambda y: (y-y1)/m + x1
+    
+            if (not self.isOutOfView(Point(0, f(0)))
+                    or
+                    not self.isOutOfView(Point(self.h, f(self.h)))):
+                
+                return True
+
+        return False
+
 
 class CoordinateGrid():
 
@@ -176,90 +206,29 @@ class CoordinateGrid():
         self.cr.stroke()
 
     def DrawGridLines(self):
-        # Generate Lines || Y axis
-        for a in range(self.xlow, self.xmax):
-            n = 1
-            p = self.ORIGIN + self.i*a + self.j*(self.ylow - n)
-            while (not self.cf.isOutOfView(p)):
-                n += 1
-                p = self.ORIGIN + self.i*a + self.j*(self.ylow - n)
-
-            self.cr.move_to(p.x, p.y)
-
-            n = 1
-            p = self.ORIGIN + self.i*a + self.j*(self.ymax + n)
-            while (not self.cf.isOutOfView(p)):
-                n += 1
-                p = self.ORIGIN + self.i*a + self.j*(self.ymax + n)
-
-            self.cr.line_to(p.x, p.y)
-
-        self.cr.stroke()
-
-        # Generate Lines || X axis
-        # Down direction
+        # Y Axis GridLines
         a = 0
+        m = self.i.y / self.i.x
+        f = lambda x, xi, yi: (x-xi)*m + yi
         while True:
-            n = 0
+            print("LOOP")
             a += 1
-            while True:
-                n += 1
-                p1 = self.ORIGIN + self.j*a + self.i*(self.xlow - n)
-
-                if (self.cf.isOutOfView(p1)):
-                    break
+            n = 0
+            p = self.ORIGIN + self.j*a
+            
+            p1 = p + self.i*self.xlow
+            p2 = p + self.i*self.ymax
 
             self.cr.move_to(p1.x, p1.y)
-
-            n = 0
-            while True:
-                n += 1
-                p2 = self.ORIGIN + self.j*a + self.i*(self.xmax + n)
-
-                if (self.cf.isOutOfView(p2)):
-                    break
-
-            self.cr.line_to(p2.x, p2.y)
-            if (self.cf.isOutOfViewY(Point(0, (0 - p1.x)*(p1.y - p2.y)/(p1.x - p2.x) + p1.y)) 
-                and
-                self.cf.isOutOfViewY(Point(self.width, (self.width - p1.x)*(p1.y - p2.y)/(p1.x - p2.x) + p1.y))
-                ):
-                break
-
-
-        # Up direction
-        a = 0
-        while True:
-            n = 0
-            a -= 1
-            while True:
-                n += 1
-                p1 = self.ORIGIN + self.j*a + self.i*(self.xlow - n)
-
-                if (self.cf.isOutOfView(p1)):
-                    break
-
-            self.cr.move_to(p1.x, p1.y)
-
-            n = 0
-            while True:
-                n += 1
-                p2 = self.ORIGIN + self.j*a + self.i*(self.xmax + n)
-
-                if (self.cf.isOutOfView(p2)):
-                    break
-
             self.cr.line_to(p2.x, p2.y)
 
-            if (self.cf.isOutOfViewY(Point(0, (0 - p1.x)*(p1.y - p2.y)/(p1.x - p2.x) + p1.y)) 
-                and
-                self.cf.isOutOfViewY(Point(self.width, (self.width - p1.x)*(p1.y - p2.y)/(p1.x - p2.x) + p1.y))
-                ):
+            if (not self.cf.intersectBoundary(m, p)):
                 break
-
 
         self.cr.stroke()
 
+    def Plot(self, point):
+        pass 
 
     def PlotFunc(self, f, xlow, xmax):
         step = self.unit/100
