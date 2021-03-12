@@ -5,8 +5,8 @@
 - [ ] Optimize Grid Line Drawing Algorithm
 - [ ] Make Colorscheme Customizable
 - [ ] Add numbers to axes
+- [ ] Add Support for Custom X Axis and Y Axis Units
 - [ ] Add Text Rendering
-- [ ] Add Points
-- [ ] Add Plotting
 - [ ] Documentation
 - [ ] Add Geometric Objects
+- [ ] Add Parametric Equation Plotting

@@ -366,17 +366,15 @@ class CoordinateGrid():
         self.cf.plotPoint(point, r, shape)
 
     def PlotFunc(self, f, xlow, xmax):
-        step = self.unit/100
-
-        for n in range((xmax-xlow)*100):
-            m1 = xlow + n*step
-            y1 = f(self.unit*m1)
-            m2 = m1 + step
-            y2 = f(self.unit*m2)
-            self.cr.move_to(*scale(self.coords(m1,y1), 1/self.unit))
-            self.cr.line_to(*scale(self.coords(m2,y2), 1/self.unit))
-        
-        self.cr.stroke()
+        x = xlow
+        while (x <= xmax):
+            p = Point(x, f(x))
+            self.cf.plotPoint(
+                    self.coords(p.x, p.y),
+                    1,
+                    'square'
+                    )
+            x += 0.005
 
 def plot_func(cr, f, ORIGIN ,i,j, xlow, xmax):
     for n in range((xmax-xlow)*100):
