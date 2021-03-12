@@ -89,11 +89,11 @@ class Context():
         self.arrow_to(cx,cy,arrow_height, arrow_angle)
         self.cr.move_to(x,y)
 
-    def Point(cr,x,y,r=5):
+    def Point(self,point,r=5):
         # Draws a point at (x,y)
     
-        cr.arc(x,y, r, 0, 2*math.pi)
-        cr.fill()
+        self.cr.arc(point.x,point.y, r, 0, 2*math.pi)
+        self.cr.fill()
 
     def isOutOfView(self, point):
         if (point.x < 0 or point.x > self.w):
@@ -342,8 +342,9 @@ class CoordinateGrid():
 
         self.cr.stroke()
 
-    def Plot(self, point):
-        pass 
+    def Plot(self, point, r=5):
+        point = self.ORIGIN + self.i * point.x + self.j * point.y
+        self.cf.Point(point, r)
 
     def PlotFunc(self, f, xlow, xmax):
         step = self.unit/100

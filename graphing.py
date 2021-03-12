@@ -20,7 +20,7 @@ cg.PlotFunc(lambda x: 3*math.sin(math.pi*x/10), -20, 20)
 
 ORIGIN = cairofunctions.Point(w/2, h/2)
 i = cairofunctions.Point(w/22, 0)
-j = cairofunctions.Point(0, w/22)
+j = cairofunctions.Point(0, -w/22)
 
 cr.set_source_rgb(0,0,0)
 cr.paint()
@@ -32,6 +32,6 @@ cg1.DrawGridLinesX()
 cr.set_source_rgba(255,255,255,0.8)
 cg1.DrawAxes()
 cg1.DrawGridMarks(0.2)
-
+cg1.Plot(cairofunctions.Point(1,2), 3)
 
 ims.write_to_png("img.png")
