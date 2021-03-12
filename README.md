@@ -6,8 +6,20 @@ This is a simple graphing calculator I made with PyCairo. I plan on making upgra
 
 # Basic Usage Guide
 
-TODO
-
 You can have multiple coordinate grids!
 
-![Sample Image2](header1.png)
+![Sample Image1](header1.png)
+
+You can have grid lines for your coordinate grids!
+
+![Sample Image2](header2.png)
+
+Color settings are controlled by PyCairo!
+
+![Sample Image3](header3.png)
+
+Get Experimental!
+
+![Sample Image4](header4.png)
+
+![Sample Image5](header5.png)
