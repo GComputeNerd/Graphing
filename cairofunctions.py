@@ -281,6 +281,67 @@ class CoordinateGrid():
 
         self.cr.stroke()
 
+    def DrawGridLinesX(self):
+        # Y Axis GridLines Direction One
+        a = 0
+        m = (self.j.y / self.j.x if self.j.x != 0 else 'NAN')
+
+        if (m == 'NAN'):
+            n = 0
+            while True:
+                n += 1
+                p = self.ORIGIN + self.i*n
+                if (self.cf.isOutOfViewX(p)): break
+                self.cr.move_to(p.x, 0)
+                self.cr.line_to(p.x, self.height)
+
+            self.cr.stroke()
+
+            n = 0
+            while True:
+                n -= 1
+                p = self.ORIGIN + self.i*n
+                if (self.cf.isOutOfViewX(p)): break
+                self.cr.move_to(p.x, 0)
+                self.cr.line_to(p.x, self.height)
+
+            self.cr.stroke()
+            return 1
+
+
+        while True:
+            # Plotting the lines
+            a += 1
+            n = 0
+            p = self.ORIGIN + self.i*a
+            intersect = self.cf.intersectBoundary(m,p)
+
+            if (not intersect[0]):
+                break
+
+            points = self.cf.intersectCoords(m,p,intersect[1])
+
+            self.cr.move_to(points[0].x, points[0].y)
+            self.cr.line_to(points[1].x, points[1].y)
+
+        a = 0
+        while True:
+            # Plotting the lines
+            a -= 1
+            n = 0
+            p = self.ORIGIN + self.i*a
+            intersect = self.cf.intersectBoundary(m,p)
+
+            if (not intersect[0]):
+                break
+
+            points = self.cf.intersectCoords(m,p,intersect[1])
+
+            self.cr.move_to(points[0].x,points[0].y)
+            self.cr.line_to(points[1].x,points[1].y)
+
+        self.cr.stroke()
+
     def Plot(self, point):
         pass 
 

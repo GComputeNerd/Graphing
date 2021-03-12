@@ -5,7 +5,7 @@ import math
 w = 1080
 h = 720
 ORIGIN = cairofunctions.Point(w/2 - 10, h/2)
-i = cairofunctions.Point(w/22, 100)
+i = cairofunctions.Point(w/22, 40)
 j = cairofunctions.Point(10, w/22)
 
 ims = cairo.ImageSurface(cairo.FORMAT_ARGB32, w, h)
@@ -26,6 +26,7 @@ cr.set_source_rgb(0,0,0)
 cr.paint()
 cr.set_source_rgb(0,0,255)
 cg.DrawGridLinesY()
+cg.DrawGridLinesX()
 cr.set_source_rgb(255,255,255)
 cg.DrawAxes()
 cg.DrawGridMarks(0.2)
