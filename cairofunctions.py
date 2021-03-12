@@ -117,27 +117,66 @@ class Context():
 
     def intersectBoundary(self, m, point):
         # Check left and right boundary
+        # The output is based on binary. DURL
+        # D - Down
+        # U - Up
+        # R - Right
+        # L - Left
+        # 1 if the line intersects, 0 if it doesnt.
+        # Sum is outputted
+
         x1 = point.x
+
         y1 = point.y
 
         f = lambda x: m*(x-x1) + y1
 
-        if (not self.isOutOfView(Point(0, f(0)))
-                or
-                not self.isOutOfView(Point(self.w, f(self.w)))):
-            return True
+        r = 0
+
+        if (not self.isOutOfView(Point(0, f(0)))):
+            r += 1
+        if (not self.isOutOfView(Point(self.w, f(self.w)))):
+            r += 2
         
         if (m != 0):
             f = lambda y: (y-y1)/m + x1
     
-            if (not self.isOutOfView(Point(0, f(0)))
-                    or
-                    not self.isOutOfView(Point(self.h, f(self.h)))):
-                
-                return True
+            if (not self.isOutOfView(Point(f(0), 0))):
+                r += 4
+            if (not self.isOutOfView(Point(f(self.h), self.h))):
+                r += 8
+        
 
-        return False
+        return ((True, r) if r > 0 else (False, r))
 
+    def intersectCoords(self, m, point, r):
+        r = format(r, 'b') # Get r in binary in string
+        r = "0"*(4 - len(r)) + r
+        x1 = point.x
+        y1 = point.y
+        points = []
+
+        f = lambda y: (y-y1)/m + x1
+        if (r[0] == '1'):
+            points.append(
+                    Point(f(self.h), self.h)
+                    )
+        if (r[1] == '1'):
+            points.append(
+                    Point(f(0), 0)
+                    )
+
+        f = lambda x: m*(x-x1) + y1
+        if (r[2] == '1'):
+            points.append(
+                    Point(self.w, f(self.w))
+                    )
+        if (r[3] == '1'):
+            points.append(
+                    Point(0, f(0))
+                    )
+
+        return points
 
 class CoordinateGrid():
 
@@ -214,26 +253,15 @@ class CoordinateGrid():
             a += 1
             n = 0
             p = self.ORIGIN + self.j*a
-            
-            n = self.xmax
-            while True:
-                n += 1
-                p1 = p + self.i*n
-                if (self.cf.isOutOfView(p1)):
-                    break
+            intersect = self.cf.intersectBoundary(m,p)
 
-            n = self.xlow
-            while True:
-                n -= 1
-                p2 = p + self.i*n
-                if (self.cf.isOutOfView(p2)):
-                    break
-
-            self.cr.move_to(p1.x, p1.y)
-            self.cr.line_to(p2.x, p2.y)
-
-            if (not self.cf.intersectBoundary(m, p)):
+            if (not intersect[0]):
                 break
+
+            points = self.cf.intersectCoords(m,p,intersect[1])
+
+            self.cr.move_to(points[0].x, points[0].y)
+            self.cr.line_to(points[1].x, points[1].y)
 
         a = 0
         while True:
@@ -241,26 +269,15 @@ class CoordinateGrid():
             a -= 1
             n = 0
             p = self.ORIGIN + self.j*a
-            
-            n = self.xmax
-            while True:
-                n += 1
-                p1 = p + self.i*n
-                if (self.cf.isOutOfView(p1)):
-                    break
+            intersect = self.cf.intersectBoundary(m,p)
 
-            n = self.xlow
-            while True:
-                n -= 1
-                p2 = p + self.i*n
-                if (self.cf.isOutOfView(p2)):
-                    break
-
-            self.cr.move_to(p1.x, p1.y)
-            self.cr.line_to(p2.x, p2.y)
-
-            if (not self.cf.intersectBoundary(m, p)):
+            if (not intersect[0]):
                 break
+
+            points = self.cf.intersectCoords(m,p,intersect[1])
+
+            self.cr.move_to(points[0].x,points[0].y)
+            self.cr.line_to(points[1].x,points[1].y)
 
         self.cr.stroke()
 
