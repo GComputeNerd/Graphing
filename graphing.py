@@ -32,6 +32,15 @@ cg1.DrawGridLinesX()
 cr.set_source_rgba(255,255,255,0.8)
 cg1.DrawAxes()
 cg1.DrawGridMarks(0.2)
-cg1.Plot(cairofunctions.Point(1,2), 3)
+cg1.Plot(cairofunctions.Point(3,3), 3, 'square')
+cg1.Plot(cairofunctions.Point(3,-3), 3)
+
+p1 = cg1.coords(2,3)
+p2 = cg1.coords(2,-3)
+p3 = cg1.coords(-2,-3)
+p4 = cg1.coords(-2,3)
+
+cf.Polygon(p1, p2, p3, p4)
+cr.stroke()
 
 ims.write_to_png("img.png")

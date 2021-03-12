@@ -89,10 +89,27 @@ class Context():
         self.arrow_to(cx,cy,arrow_height, arrow_angle)
         self.cr.move_to(x,y)
 
-    def Point(self,point,r=5):
+    def Polygon(self, *points):
+        self.cr.move_to(points[0].x, points[0].y)
+        
+        for i in range(1, len(points)):
+            self.cr.line_to(points[i].x, points[i].y)
+
+        self.cr.close_path()
+
+    def plotPoint(self,point,r=5, shape='circle'):
         # Draws a point at (x,y)
-    
-        self.cr.arc(point.x,point.y, r, 0, 2*math.pi)
+
+        if (shape == 'circle'):
+            self.cr.arc(point.x,point.y, r, 0, 2*math.pi)
+        elif (shape == 'square'):
+            r = r/math.sqrt(2)
+            self.Polygon(
+                    Point(point.x +r, point.y +r),
+                    Point(point.x +r, point.y -r),
+                    Point(point.x -r, point.y -r),
+                    Point(point.x -r, point.y +r)
+                    )
         self.cr.fill()
 
     def isOutOfView(self, point):
@@ -206,6 +223,8 @@ class CoordinateGrid():
         self.xlow = 0
         while (not self.cf.isOutOfView(self.ORIGIN + self.i*self.xlow)):
             self.xlow -= 1
+
+    coords = lambda self,x,y : self.ORIGIN + self.i*x + self.j*y
 
 
     def DrawAxes(self):
@@ -342,9 +361,9 @@ class CoordinateGrid():
 
         self.cr.stroke()
 
-    def Plot(self, point, r=5):
+    def Plot(self, point, r=5, shape='circle'):
         point = self.ORIGIN + self.i * point.x + self.j * point.y
-        self.cf.Point(point, r)
+        self.cf.plotPoint(point, r, shape)
 
     def PlotFunc(self, f, xlow, xmax):
         step = self.unit/100
