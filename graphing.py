@@ -36,7 +36,7 @@ cg1.DrawGridMarks(0.2)
 #cg1.Plot(cairofunctions.Point(3,-3), 3)
 #cg1.Plot(cairofunctions.Point(6,3),3)
 
-p1 = cg1.coords(2,3)
+p1 = cg1.coords(6,7)
 p2 = cg1.coords(2,-3)
 p3 = cg1.coords(-2,-3)
 p4 = cg1.coords(-2,3)

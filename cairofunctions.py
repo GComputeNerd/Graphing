@@ -49,12 +49,15 @@ class Context():
         self.w = w
         self.h = h
 
-    def arrow_to(self, point, arrow_height=20, arrow_angle=math.pi/8):
+    def arrow(self, point1, point2, arrow_height=20, arrow_angle=math.pi/8):
         #Draws an arrow from current point to (x,y)
-        x = point.x
-        y = point.y
+        x = point2.x
+        y = point2.y
+        cx = point1.x
+        cy = point1.y
+
+        self.cr.move_to(cx,cy)
     
-        cx, cy = self.cr.get_current_point() # Gets Current Point
         self.cr.line_to(x,y)
         self.cr.stroke() # Draw Regular Line
     
@@ -74,15 +77,16 @@ class Context():
     
         self.cr.stroke() # Draw Arrowhead
 
-    def double_arrow_to(self, point, arrow_height=20, arrow_angle=math.pi/8):
+    def double_arrow(self, point1, point2, arrow_height=20, arrow_angle=math.pi/8):
         # Draws a double arrow between 2 points
-        x = point.x
-        y = point.y
-    
-        cx, cy = self.cr.get_current_point()
-        self.arrow_to(x,y,arrow_height, arrow_angle)
-        self.cr.move_to(x,y)
-        self.arrow_to(cx,cy,arrow_height, arrow_angle)
+        x = point2.x
+        y = point2.y
+
+        cx = point1.x
+        cy = point1.y
+
+        self.arrow(point1, point2,arrow_height, arrow_angle)
+        self.arrow(point2, point1,arrow_height, arrow_angle)
         self.cr.move_to(x,y)
 
     def Polygon(self, *points):
