@@ -9,4 +9,3 @@
 - [ ] Add Text Rendering
 - [ ] Documentation
 - [ ] Add Geometric Objects
-- [ ] Add Parametric Equation Plotting

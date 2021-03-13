@@ -365,16 +365,27 @@ class CoordinateGrid():
         point = self.ORIGIN + self.i * point.x + self.j * point.y
         self.cf.plotPoint(point, r, shape)
 
-    def PlotFunc(self, f, xlow, xmax):
+    def PlotFunc(self, f, xlow, xmax, r=1, step=0.005):
         x = xlow
         while (x <= xmax):
             p = Point(x, f(x))
             self.cf.plotPoint(
                     self.coords(p.x, p.y),
-                    1,
+                    r,
                     'square'
                     )
-            x += 0.005
+            x += step
+
+    def PlotParametric(self, x, y, tmin, tmax, r=1, step=0.005):
+        t = tmin
+        while (t <= tmax):
+            p = Point(x(t), y(t))
+            self.cf.plotPoint(
+                    self.coords(p.x,p.y),
+                    r,
+                    'square'
+                    )
+            t += step
 
 def plot_func(cr, f, ORIGIN ,i,j, xlow, xmax):
     for n in range((xmax-xlow)*100):

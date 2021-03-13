@@ -18,9 +18,9 @@ cg.DrawGridMarks(8)
 cg.PlotFunc(lambda x: 3*math.sin(math.pi*x/10), -20, 20)
 """
 
-ORIGIN = cairofunctions.Point(w/2 - 40, h/2)
+ORIGIN = cairofunctions.Point(w/2, h/2)
 i = cairofunctions.Point(w/22, 0)
-j = cairofunctions.Point(20, -w/22 -20)
+j = cairofunctions.Point(0, -w/22)
 
 cr.set_source_rgb(0,0,0)
 cr.paint()
@@ -46,6 +46,19 @@ p4 = cg1.coords(-2,3)
 
 cr.set_source_rgba(0,255,0,0.8)
 
-cg1.PlotFunc(lambda x: math.sin(x), -20, 20)
+#cg1.PlotFunc(lambda x: math.exp(x), -20, 20)
+#cg1.PlotFunc(lambda x: sum([x**n/math.factorial(n) for n in range(100)]), -20, 20)
 
-ims.write_to_png("img.png")
+cr.set_source_rgba(255,255,0,0.8)
+cg1.PlotParametric(lambda x: 6/math.cos(x), lambda y: 6*math.tan(y), 0, 7, 1, 0.0025)
+
+cr.set_source_rgba(255,0,255,0.8)
+cg1.PlotParametric(lambda x: 3*math.cos(x), lambda y: 3*math.sin(y), 0, 7)
+
+cr.set_source_rgba(0,255,255,0.8)
+cg1.PlotParametric(lambda x: 4*math.cos(x), lambda y: 5*math.sin(y),0,7)
+
+cr.set_source_rgba(1,0.5,0.2,0.8)
+cg1.PlotParametric(lambda x: x, lambda y: 0.24*y*y -6, -20, 20)
+
+ims.write_to_png("header6.png")
