@@ -1,14 +1,6 @@
 import cairo
 import math
 
-add = lambda point1, point2: tuple(point1[i] + point2[i] for i in range(len(point1)))
-
-scale = lambda point, scalar: tuple(scalar*i for i in point)
-
-norm2 = lambda vec: math.sqrt(sum([i**2 for i in vec]))
-
-coords = lambda ORIGIN,i,j,x,y: (add(ORIGIN,scale(i,x))[0], add(ORIGIN,scale(j,y))[1])
-
 class Error(Exception):
     pass
 
@@ -386,34 +378,3 @@ class CoordinateGrid():
                     'square'
                     )
             t += step
-
-def plot_func(cr, f, ORIGIN ,i,j, xlow, xmax):
-    for n in range((xmax-xlow)*100):
-        m1 = xlow + n*0.01
-        y1 = eval(f, {"x":m1})
-        m2 = m1 + 0.01
-        y2 = eval(f, {"x":m2})
-        cr.move_to(*coords(ORIGIN,i,j,m1,y1))
-        cr.line_to(*coords(ORIGIN,i,j,m2,y2))
-        cr.stroke()
-
-def Polygon(cr, *points):
-    # Draws polygon passing through points
-    # There's probably a better way to do this...Oh Well.
-    if (len(points) < 6):
-        raise Error("WTF YOU WANTED A POLYGON.... *POLY* GON!!!")
-    elif (len(points) %2 == 1):
-        raise Error("I NEED A PAIR OF COORDINATES FOR EVERY POINT!!! COME ON DUUDE!!! MY PATIENCE IS GONEEEEE, less existent than your polygon")
-
-    m = len(points) - 2
-
-    for i in range(m):
-        if (i%2 == 1 ):
-            continue
-        cr.move_to(points[i], points[i+1])
-        cr.line_to(points[i+2], points[i+3])
-
-    cr.move_to(points[-2], points[-1])
-    cr.line_to(points[0], points[1])
-
-    cr.stroke()

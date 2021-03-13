@@ -61,4 +61,4 @@ cg1.PlotParametric(lambda x: 4*math.cos(x), lambda y: 5*math.sin(y),0,7)
 cr.set_source_rgba(1,0.5,0.2,0.8)
 cg1.PlotParametric(lambda x: x, lambda y: 0.24*y*y -6, -20, 20)
 
-ims.write_to_png("header6.png")
+ims.write_to_png("header7.png")
