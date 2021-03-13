@@ -49,8 +49,10 @@ class Context():
         self.w = w
         self.h = h
 
-    def arrow_to(self, x, y, arrow_height=20, arrow_angle=math.pi/8):
-        #Draws an arrow from curret point to (x,y)
+    def arrow_to(self, point, arrow_height=20, arrow_angle=math.pi/8):
+        #Draws an arrow from current point to (x,y)
+        x = point.x
+        y = point.y
     
         cx, cy = self.cr.get_current_point() # Gets Current Point
         self.cr.line_to(x,y)
@@ -72,8 +74,10 @@ class Context():
     
         self.cr.stroke() # Draw Arrowhead
 
-    def double_arrow_to(self, x, y, arrow_height=20, arrow_angle=math.pi/8):
+    def double_arrow_to(self, point, arrow_height=20, arrow_angle=math.pi/8):
         # Draws a double arrow between 2 points
+        x = point.x
+        y = point.y
     
         cx, cy = self.cr.get_current_point()
         self.arrow_to(x,y,arrow_height, arrow_angle)
