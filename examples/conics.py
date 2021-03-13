@@ -29,10 +29,10 @@ cg1.DrawGridMarks(0.2) # Draw Grid Marks
 cr.set_source_rgba(1,1,0,0.8) # Set Color to Yellow
 cg1.PlotParametric(lambda x: 6/math.cos(x), lambda y: 6*math.tan(y), 0, 7, 1, 0.0025) # Plot Hyperbola
 
-cr.set_source_rgba(255,0,255,0.8) # Set Color to Purple
+cr.set_source_rgba(1,0,1,0.8) # Set Color to Purple
 cg1.PlotParametric(lambda x: 3*math.cos(x), lambda y: 3*math.sin(y), 0, 7) # Plot Circle
 
-cr.set_source_rgba(0,255,255,0.8) # Set Color to Blueish Green
+cr.set_source_rgba(0,1,1,0.8) # Set Color to Blueish Green
 cg1.PlotParametric(lambda x: 4*math.cos(x), lambda y: 5*math.sin(y),0,7) # Plot Ellipse
 
 cr.set_source_rgba(1,0.5,0.2,0.8) # Set Color to Orangish
