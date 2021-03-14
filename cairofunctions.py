@@ -18,6 +18,8 @@ class Point():
         elif (isinstance(scalar, int)):
             return Point(self.x * scalar, self.y * scalar)
 
+    __rmul__ = __mul__
+
     def __sub__(self, point):
         return Point(self.x - point.x, self.y - point.y)
 
@@ -30,6 +32,11 @@ class Point():
 
     def norm(self):
         return self / self.mod()
+
+UP = Point(0,1)
+DOWN = Point(0,-1)
+LEFT = Point(-1,0)
+RIGHT = Point(1,0)
 
 class Transform():
     def __init__(self, i, j):
@@ -386,3 +393,16 @@ class CoordinateGrid():
                     'square'
                     )
             t += step
+
+    def Write(self, text, point, font_face="Arial", slant=cairo.FONT_SLANT_NORMAL, weight=cairo.FONT_WEIGHT_NORMAL, size=13):
+        # This is a Temporary Write Function.
+        # Planning to upgrade this with support for LaTeX.
+        # And Using Pango, for now, just using The Standard
+        # PyCairo Text Functions.
+        point = self.coords(point.x, point.y)
+
+        self.cr.move_to(point.x, point.y)
+        self.cr.select_font_face(font_face, slant, weight)
+        self.cr.set_font_size(size)
+        self.cr.show_text(text)
+
