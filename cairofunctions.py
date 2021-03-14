@@ -403,4 +403,9 @@ class CoordinateGrid():
         self.cr.set_font_size(size)
         self.cr.show_text(text)
 
+    def arrow(self, point1, point2, arrow_height=20, arrow_angle=math.pi/8):
+        point1 = self.coords(point1)
+        point2 = self.coords(point2)
+        self.cf.arrow(point1, point2, arrow_height, arrow_angle)
+
 
