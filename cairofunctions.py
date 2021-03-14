@@ -231,7 +231,7 @@ class CoordinateGrid():
         while (not self.cf.isOutOfView(self.ORIGIN + self.i*self.xlow)):
             self.xlow -= 1
 
-    coords = lambda self,x,y : self.ORIGIN + self.i*x + self.j*y
+    coords = lambda self,point : self.ORIGIN + self.i*point.x + self.j*point.y
 
 
     def DrawAxes(self):
@@ -369,15 +369,13 @@ class CoordinateGrid():
         self.cr.stroke()
 
     def Plot(self, point, r=5, shape='circle'):
-        point = self.ORIGIN + self.i * point.x + self.j * point.y
-        self.cf.plotPoint(point, r, shape)
+        self.cf.plotPoint(self.coords(point), r, shape)
 
     def PlotFunc(self, f, xlow, xmax, r=1, step=0.005):
         x = xlow
         while (x <= xmax):
-            p = Point(x, f(x))
-            self.cf.plotPoint(
-                    self.coords(p.x, p.y),
+            self.Plot(
+                    Point(x, f(x)),
                     r,
                     'square'
                     )
@@ -386,9 +384,8 @@ class CoordinateGrid():
     def PlotParametric(self, x, y, tmin, tmax, r=1, step=0.005):
         t = tmin
         while (t <= tmax):
-            p = Point(x(t), y(t))
-            self.cf.plotPoint(
-                    self.coords(p.x,p.y),
+            self.Plot(
+                    Point(x(t), y(t)),
                     r,
                     'square'
                     )
@@ -399,10 +396,11 @@ class CoordinateGrid():
         # Planning to upgrade this with support for LaTeX.
         # And Using Pango, for now, just using The Standard
         # PyCairo Text Functions.
-        point = self.coords(point.x, point.y)
+        point = self.coords(point)
 
         self.cr.move_to(point.x, point.y)
         self.cr.select_font_face(font_face, slant, weight)
         self.cr.set_font_size(size)
         self.cr.show_text(text)
+
 

@@ -33,4 +33,6 @@ for point in points:
     cg.Write(f"{point.x,point.y}", point + 0.12*cairofunctions.RIGHT + 0.12*cairofunctions.DOWN, size=17.5)
     point += i
 
+cr.set_source_rgba(1, 0.5, 0.2, 0.8)
+
 ims.write_to_png("img.png")
