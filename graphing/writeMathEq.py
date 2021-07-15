@@ -1,13 +1,25 @@
 import subprocess
+import os
+
 from graphing.data import *
+
+try:
+    from importlib import resources
+except ImportError:
+    import importlib_resources as resources
 
 # Program to test rendering of LaTeX equation into a .svg file
 
 def renderMath(eqn, name):
     # Rendering equation
     
-    template = open(root + "graphing/template.tex")
-    f = open("tex-files/" + name + ".tex", "w")
+    template = resources.open_text("graphing","template.tex")
+    
+    try :
+        f = open("tex-files/" + name + ".tex", "w")
+    except FileNotFoundError:
+        os.mkdir("tex-files")
+        f = open("tex-files/" + name + ".tex", "w")
     line = ""
     
     while (not (r"\begin{document}" in line)):
