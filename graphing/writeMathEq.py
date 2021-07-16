@@ -1,8 +1,6 @@
 import subprocess
 import os
 
-from graphing.data import *
-
 try:
     from importlib import resources
 except ImportError:
