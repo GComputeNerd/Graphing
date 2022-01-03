@@ -6,6 +6,7 @@
 - [ ] Make Colorscheme Customizable
 - [ ] Add numbers to axes
 - [ ] Add Support for Custom X Axis and Y Axis Units
-- [ ] Add Text Rendering
+- [ ] Upgrade Text Rendering
 - [ ] Documentation
 - [ ] Add Geometric Objects
+- [ ] Graph Implicit Equations
