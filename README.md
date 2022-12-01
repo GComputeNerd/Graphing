@@ -2,7 +2,7 @@
 
 # Graphing
 
-This is a simple graphing calculator I made with PyCairo. I plan on making upgrades later. For now, it graphs functions of the form y=f(x) .
+This is a graphing library written in Python, using PyCairo. A working PyCairo setup is required to use the library.
 
 # Installation
 
